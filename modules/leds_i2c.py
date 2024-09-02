@@ -61,6 +61,14 @@ class LedsI2c:
 
         self.__pcf.get_pin(led_pin).value = not state
 
+    def get_led(self, led_pin: int) -> bool:
+        if led_pin >= self.led_count:
+            raise ValueError(
+                f"LED pin should be smaller than {self.led_count} but was {led_pin}"
+            )
+
+        return not self.__pcf.get_pin(led_pin).value
+
 
 def run_example():
     leds = LedsI2c(i2c_bus=8, led_count=4)
