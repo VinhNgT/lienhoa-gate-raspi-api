@@ -1,5 +1,5 @@
 from rpi_hardware_pwm import HardwarePWM
-from time import time, sleep
+from time import sleep
 import math
 from typing import Final
 

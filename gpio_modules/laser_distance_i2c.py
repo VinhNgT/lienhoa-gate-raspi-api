@@ -4,7 +4,7 @@ from adafruit_extended_bus import ExtendedI2C as I2C
 from time import sleep
 
 
-class LaserDistanceI2C:
+class LaserDistanceI2c:
     MEASUREMENT_TIMING_BUDGET: Final = 200000
 
     def __init__(self, i2c_bus, is_continuous=False, calibration_offset=0):
@@ -28,7 +28,7 @@ class LaserDistanceI2C:
 
 
 def run_example():
-    laser = LaserDistanceI2C(i2c_bus=7, is_continuous=True, calibration_offset=-40)
+    laser = LaserDistanceI2c(i2c_bus=7, is_continuous=True, calibration_offset=-40)
 
     while True:
         print("Range: {0}mm".format(laser.get_distance()))
