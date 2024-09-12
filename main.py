@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException, status
-from .modules import status_lights
+from modules import status_lights, gate
 
 app = FastAPI()
 
 app.include_router(status_lights.router)
+app.include_router(gate.router)
 
 
 @app.exception_handler(ValueError)

@@ -16,8 +16,6 @@ class StatusLightState(str, Enum):
 class StatusLights:
     def __init__(self):
         self.leds = LedsI2c(i2c_bus=8, led_count=4)
-
-        self.current_state = StatusLightState.NONE
         self.set_status(StatusLightState.NONE)
 
     def set_status(self, state: StatusLightState):
