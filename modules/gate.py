@@ -18,10 +18,10 @@ class Gate:
     def set_status(self, state: GateState):
         match state:
             case GateState.CLOSE:
-                self.servo.ease_angle(0, ease_seconds=3)
+                self.servo.ease_angle(0, ease_seconds=0.5)
 
             case GateState.OPEN:
-                self.servo.ease_angle(90, ease_seconds=3)
+                self.servo.ease_angle(90, ease_seconds=0.5)
 
         self.current_state = state
 
