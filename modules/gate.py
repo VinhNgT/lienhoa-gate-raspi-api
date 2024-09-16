@@ -5,6 +5,8 @@ from typing import Annotated
 from gpio_modules.servo_hw_pwm import ServoHwPwm
 import atexit
 import threading
+from modules.exceptions import app_exceptions
+from modules.utils.request_count_tracker import RequestCountTracker
 
 
 class GateState(str, Enum):
@@ -15,21 +17,30 @@ class GateState(str, Enum):
 class Gate:
     def __init__(self):
         self._servo = ServoHwPwm(pwm_channel=0)
-        self._lock = threading.Lock()
+        self._lock = threading.Semaphore()
+        self._requests_count_tracker = RequestCountTracker(3)
 
         self.set_status(GateState.CLOSE)
         atexit.register(self._servo.cleanup)
 
+    @property
+    def is_limited(self):
+        return self._requests_count_tracker.is_max_requests_reached()
+
     def set_status(self, state: GateState):
-        with self._lock:
-            match state:
-                case GateState.CLOSE:
-                    self._servo.ease_angle(0, ease_seconds=0.5)
+        if self.is_limited:
+            raise app_exceptions.TooManyRequestsException()
 
-                case GateState.OPEN:
-                    self._servo.ease_angle(90, ease_seconds=0.5)
+        with self._requests_count_tracker:
+            with self._lock:
+                match state:
+                    case GateState.CLOSE:
+                        self._servo.ease_angle(0, ease_seconds=0.5)
 
-            self.current_state = state
+                    case GateState.OPEN:
+                        self._servo.ease_angle(90, ease_seconds=0.5)
+
+                self.current_state = state
 
 
 class GateStateResponse(BaseModel):
@@ -66,5 +77,8 @@ def set_status_light(
     """
     Set the gate state
     """
+    if gate.is_limited:
+        raise app_exceptions.TooManyRequestsException()
+
     background_tasks.add_task(gate.set_status, state)
     return GateStateResponse(state=gate.current_state)
