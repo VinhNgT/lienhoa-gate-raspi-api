@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
-from modules import status_lights, gate, screen, buzzer
+from modules import status_lights, gate, screen, buzzer, distance_sensor
 
 app = FastAPI()
 
@@ -7,6 +7,7 @@ app.include_router(status_lights.router)
 app.include_router(gate.router)
 app.include_router(screen.router)
 app.include_router(buzzer.router)
+app.include_router(distance_sensor.router)
 
 
 @app.exception_handler(ValueError)
