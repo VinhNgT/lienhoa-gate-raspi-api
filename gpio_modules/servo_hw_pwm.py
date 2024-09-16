@@ -19,19 +19,19 @@ class ServoHwPwm:
         ) / self.SERVO_MAX_ANGLE
 
         # Initialize PWM
-        self.__pwm: Final = HardwarePWM(
+        self._pwm: Final = HardwarePWM(
             pwm_channel=pwm_channel, hz=self.SERVO_FREQUENCY, chip=0
         )
-        self.__pwm.start(min_duty)
+        self._pwm.start(min_duty)
 
         # Variables
         self.current_angle = self.SERVO_MIN_ANGLE
         self.current_duty = self.min_duty
 
     def __del__(self):
-        self.__pwm.change_duty_cycle(self.min_duty)
+        self._pwm.change_duty_cycle(self.min_duty)
         sleep(SERVO_DEFAULT_SLEEP_DURATION)
-        self.__pwm.stop()
+        self._pwm.stop()
 
     def set_duty(self, duty: float):
         # Warn: Setting the duty too high or too low will confused the servo.
@@ -50,7 +50,7 @@ class ServoHwPwm:
         self.current_duty = round(clampped_duty, rounding_digits)
 
         # print(f"Setting duty: {self.current_duty}, angle: {self.current_angle}")
-        self.__pwm.change_duty_cycle(self.current_duty)
+        self._pwm.change_duty_cycle(self.current_duty)
 
     def set_angle(self, angle: float):
         self.set_duty(self.min_duty + self.angle_duty_ratio * angle)

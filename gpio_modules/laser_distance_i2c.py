@@ -8,23 +8,23 @@ class LaserDistanceI2c:
     MEASUREMENT_TIMING_BUDGET: Final = 200000
 
     def __init__(self, i2c_bus, is_continuous=False, calibration_offset=0):
-        self.__sensor = VL53L0X(I2C(i2c_bus))
-        self.__sensor.measurement_timing_budget = self.MEASUREMENT_TIMING_BUDGET
+        self._sensor = VL53L0X(I2C(i2c_bus))
+        self._sensor.measurement_timing_budget = self.MEASUREMENT_TIMING_BUDGET
         self.calibration_offset: Final = calibration_offset
-        self.is_continuous = is_continuous
+        self.is_continuous: Final = is_continuous
 
         if is_continuous:
-            self.__sensor.start_continuous()
+            self._sensor.start_continuous()
 
     def __del__(self):
         if self.is_continuous:
-            self.__sensor.stop_continuous()
+            self._sensor.stop_continuous()
 
     def get_distance(self) -> int:
         """
         Return the distance in mm
         """
-        return max(0, self.__sensor.range + self.calibration_offset)
+        return max(0, self._sensor.range + self.calibration_offset)
 
 
 def run_example():

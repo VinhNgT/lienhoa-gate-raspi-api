@@ -8,7 +8,7 @@ class LcdI2c:
     MAX_LINE_COUNT: Final = 4
 
     def __init__(self, i2c_bus, i2c_addr=0x27):
-        self.__lcd = CharLCD(
+        self._lcd = CharLCD(
             i2c_expander="PCF8574",
             address=i2c_addr,
             port=i2c_bus,
@@ -17,11 +17,11 @@ class LcdI2c:
         )
 
     def __del__(self):
-        self.__lcd.clear()
+        self._lcd.clear()
         self.write_string("LCD connection closed")
-        self.__lcd.close()
+        self._lcd.close()
 
-    def __auto_newline(
+    def _auto_newline(
         self, input_string: str, max_line_length=MAX_LINE_LENGTH
     ) -> list[str]:
         words = input_string.split()
@@ -41,13 +41,13 @@ class LcdI2c:
         return lines
 
     def clear(self):
-        self.__lcd.clear()
+        self._lcd.clear()
 
     def write_string(self, text: str, clear=True, format_string=True):
         lines = text.split("\n")
         lines = list(
             chain.from_iterable(
-                [self.__auto_newline(line) if line != "" else [""] for line in lines]
+                [self._auto_newline(line) if line != "" else [""] for line in lines]
             )
         )
 
@@ -68,8 +68,8 @@ class LcdI2c:
                     f"Line length is greater than {self.MAX_LINE_LENGTH} characters: {line}"
                 )
 
-            self.__lcd.write_string(line)
-            self.__lcd.crlf()
+            self._lcd.write_string(line)
+            self._lcd.crlf()
 
 
 def run_example():

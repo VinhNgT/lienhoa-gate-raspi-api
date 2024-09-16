@@ -15,25 +15,25 @@ class StatusLightState(str, Enum):
 
 class StatusLights:
     def __init__(self):
-        self.leds = LedsI2c(i2c_bus=8, led_count=4)
+        self._leds = LedsI2c(i2c_bus=8, led_count=4)
         self.set_status(StatusLightState.NONE)
 
     def set_status(self, state: StatusLightState):
         match state:
             case StatusLightState.NONE:
-                self.leds.set_leds_bits(0b0000)
+                self._leds.set_leds_bits(0b0000)
 
             case StatusLightState.CAR_DETTECTED:
-                self.leds.set_leds_bits(0b0001)
+                self._leds.set_leds_bits(0b0001)
 
             case StatusLightState.PROCESSING:
-                self.leds.set_leds_bits(0b0010)
+                self._leds.set_leds_bits(0b0010)
 
             case StatusLightState.ALLOW:
-                self.leds.set_leds_bits(0b0100)
+                self._leds.set_leds_bits(0b0100)
 
             case StatusLightState.DENY:
-                self.leds.set_leds_bits(0b1000)
+                self._leds.set_leds_bits(0b1000)
 
         self.current_state = state
 

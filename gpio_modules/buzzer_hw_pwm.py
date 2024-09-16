@@ -4,17 +4,17 @@ from time import sleep
 
 class BuzzerHwPwm:
     def __init__(self, pwm_channel):
-        self.pwm = HardwarePWM(pwm_channel=pwm_channel, hz=100, chip=0)
-        self.pwm.start(0)
+        self._pwm = HardwarePWM(pwm_channel=pwm_channel, hz=100, chip=0)
+        self._pwm.start(0)
 
     def __del__(self):
-        self.pwm.stop()
+        self._pwm.stop()
 
-    def beep(self, frequency, duration):
-        self.pwm.change_frequency(frequency)
-        self.pwm.change_duty_cycle(50)
+    def beep(self, frequency: float, duration: float):
+        self._pwm.change_frequency(frequency)
+        self._pwm.change_duty_cycle(50)
         sleep(duration)
-        self.pwm.change_duty_cycle(0)
+        self._pwm.change_duty_cycle(0)
 
 
 def run_example():

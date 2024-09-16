@@ -6,10 +6,10 @@ from gpio_modules.lcd_i2c import LcdI2c
 
 class LcdScreen:
     def __init__(self):
-        self.lcd = LcdI2c(i2c_bus=1)
+        self._lcd = LcdI2c(i2c_bus=1)
 
     def write_string(self, text: str, format_string: bool):
-        self.lcd.write_string(text, format_string=format_string)
+        self._lcd.write_string(text, format_string=format_string)
 
 
 class LcdFormData(BaseModel):

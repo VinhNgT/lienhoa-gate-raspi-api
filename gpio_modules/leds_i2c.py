@@ -11,18 +11,18 @@ class LedsI2c:
     def __init__(self, i2c_bus: int, i2c_addr=0x20, led_count=PCF8574_PIN_COUNT):
         self.led_count: Final = led_count
 
-        self.__i2c = I2C(i2c_bus)
-        self.__pcf = PCF8574(self.__i2c, i2c_addr)
-        self.__setup_pins(self.__pcf)
+        self._i2c = I2C(i2c_bus)
+        self._pcf = PCF8574(self._i2c, i2c_addr)
+        self._setup_pins(self._pcf)
 
     def __del__(self):
-        self.__pcf.write_gpio(0xFF)
+        self._pcf.write_gpio(0xFF)
 
-    def __setup_pins(self, pcf: PCF8574):
+    def _setup_pins(self, pcf: PCF8574):
         for i in range(self.PCF8574_PIN_COUNT):
             pcf.get_pin(i).switch_to_output(True)
 
-    def __reverse_bits(self, bits: int) -> int:
+    def _reverse_bits(self, bits: int) -> int:
         result = 0
         for i in range(self.led_count):
             # Move the result one bit to the left and add the least significant
@@ -47,11 +47,11 @@ class LedsI2c:
                 f"The amount of bits should be smaller or equal to {self.led_count} bits"
             )
 
-        adjusted_bits = self.__reverse_bits(bits) if is_reversed else bits
+        adjusted_bits = self._reverse_bits(bits) if is_reversed else bits
 
         # The LEDs use 'active low' logic, so we need to flip the bits.
         flipped = ~adjusted_bits & 0xFF
-        self.__pcf.write_gpio(flipped)
+        self._pcf.write_gpio(flipped)
 
     def set_led(self, led_pin: int, state: bool):
         if led_pin >= self.led_count:
@@ -59,7 +59,7 @@ class LedsI2c:
                 f"LED pin should be smaller than {self.led_count} but was {led_pin}"
             )
 
-        self.__pcf.get_pin(led_pin).value = not state
+        self._pcf.get_pin(led_pin).value = not state
 
     def get_led(self, led_pin: int) -> bool:
         if led_pin >= self.led_count:
@@ -67,7 +67,7 @@ class LedsI2c:
                 f"LED pin should be smaller than {self.led_count} but was {led_pin}"
             )
 
-        return not self.__pcf.get_pin(led_pin).value
+        return not self._pcf.get_pin(led_pin).value
 
 
 def run_example():
