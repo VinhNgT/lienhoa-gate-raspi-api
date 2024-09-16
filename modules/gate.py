@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from fastapi import APIRouter, Form
 from typing import Annotated
 from gpio_modules.servo_hw_pwm import ServoHwPwm
+import atexit
 
 
 class GateState(str, Enum):
@@ -14,6 +15,7 @@ class Gate:
     def __init__(self):
         self._servo = ServoHwPwm(pwm_channel=0)
         self.set_status(GateState.CLOSE)
+        atexit.register(self._servo.cleanup)
 
     def set_status(self, state: GateState):
         match state:

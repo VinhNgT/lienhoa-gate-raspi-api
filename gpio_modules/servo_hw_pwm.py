@@ -28,7 +28,13 @@ class ServoHwPwm:
         self.current_angle = self.SERVO_MIN_ANGLE
         self.current_duty = self.min_duty
 
-    def __del__(self):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.cleanup()
+
+    def cleanup(self):
         self._pwm.change_duty_cycle(self.min_duty)
         sleep(SERVO_DEFAULT_SLEEP_DURATION)
         self._pwm.stop()

@@ -7,7 +7,13 @@ class BuzzerHwPwm:
         self._pwm = HardwarePWM(pwm_channel=pwm_channel, hz=100, chip=0)
         self._pwm.start(0)
 
-    def __del__(self):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.cleanup()
+
+    def cleanup(self):
         self._pwm.stop()
 
     def beep(self, frequency: float, duration: float):

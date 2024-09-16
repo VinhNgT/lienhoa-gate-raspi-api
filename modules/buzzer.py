@@ -2,11 +2,13 @@ from pydantic import BaseModel
 from fastapi import APIRouter, Form
 from typing import Annotated
 from gpio_modules.buzzer_hw_pwm import BuzzerHwPwm
+import atexit
 
 
 class Buzzer:
     def __init__(self):
         self._buzzer = BuzzerHwPwm(pwm_channel=1)
+        atexit.register(self._buzzer.cleanup)
 
     def beep(self, frequency, duration):
         self._buzzer.beep(frequency, duration)
