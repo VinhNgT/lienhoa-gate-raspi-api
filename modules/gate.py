@@ -1,9 +1,10 @@
 from enum import Enum
 from pydantic import BaseModel
-from fastapi import APIRouter, Form
+from fastapi import APIRouter, Form, BackgroundTasks
 from typing import Annotated
 from gpio_modules.servo_hw_pwm import ServoHwPwm
 import atexit
+import threading
 
 
 class GateState(str, Enum):
@@ -14,18 +15,21 @@ class GateState(str, Enum):
 class Gate:
     def __init__(self):
         self._servo = ServoHwPwm(pwm_channel=0)
+        self._lock = threading.Lock()
+
         self.set_status(GateState.CLOSE)
         atexit.register(self._servo.cleanup)
 
     def set_status(self, state: GateState):
-        match state:
-            case GateState.CLOSE:
-                self._servo.ease_angle(0, ease_seconds=0.5)
+        with self._lock:
+            match state:
+                case GateState.CLOSE:
+                    self._servo.ease_angle(0, ease_seconds=0.5)
 
-            case GateState.OPEN:
-                self._servo.ease_angle(90, ease_seconds=0.5)
+                case GateState.OPEN:
+                    self._servo.ease_angle(90, ease_seconds=0.5)
 
-        self.current_state = state
+            self.current_state = state
 
 
 class GateStateResponse(BaseModel):
@@ -56,9 +60,11 @@ def read_gate():
     summary="Set gate state",
     response_model=GateStateResponse,
 )
-def set_status_light(state: Annotated[GateState, Form()]):
+def set_status_light(
+    state: Annotated[GateState, Form()], background_tasks: BackgroundTasks
+):
     """
     Set the gate state
     """
-    gate.set_status(state)
+    background_tasks.add_task(gate.set_status, state)
     return GateStateResponse(state=gate.current_state)
