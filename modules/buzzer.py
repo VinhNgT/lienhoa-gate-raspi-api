@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from fastapi import APIRouter, Form, BackgroundTasks
+from pydantic import BaseModel, Field
+from fastapi import APIRouter, Form, BackgroundTasks, Body
 from typing import Annotated
 from gpio_modules.buzzer_hw_pwm import BuzzerHwPwm
 import atexit
@@ -30,8 +30,18 @@ class Buzzer:
 
 
 class BuzzerFormData(BaseModel):
-    frequency: float
-    duration: float
+    frequency: float = Field(
+        description="Frequency in Hz",
+        examples=[600, 1000],
+        ge=0.1,
+        le=1000,
+    )
+    duration: float = Field(
+        description="Duration in seconds",
+        examples=[0.5, 1.0],
+        ge=0.1,
+        le=5,
+    )
 
 
 router = APIRouter(
@@ -47,7 +57,8 @@ buzzer = Buzzer()
     response_model=BuzzerFormData,
 )
 def set_buzzer(
-    data: Annotated[BuzzerFormData, Form()], background_tasks: BackgroundTasks
+    data: Annotated[BuzzerFormData, Form()],
+    background_tasks: BackgroundTasks,
 ):
     if buzzer.is_limited:
         raise app_exceptions.TooManyRequestsException()

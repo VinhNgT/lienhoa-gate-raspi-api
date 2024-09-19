@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form
 from typing import Annotated
 from gpio_modules.lcd_i2c import LcdI2c
@@ -13,7 +13,10 @@ class LcdScreen:
 
 
 class LcdFormData(BaseModel):
-    text: str
+    text: str = Field(
+        description="Text to display on the screen",
+        examples=["Hello, World!"],
+    )
     format: bool = True
 
 

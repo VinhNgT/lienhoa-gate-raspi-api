@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form
 from typing import Annotated
 from gpio_modules.leds_i2c import LedsI2c
@@ -39,7 +39,10 @@ class StatusLights:
 
 
 class StatusLightsStateResponse(BaseModel):
-    state: StatusLightState
+    state: StatusLightState = Field(
+        description="The status light state",
+        examples=["none", "car_detected", "processing", "allow", "deny"],
+    )
 
 
 router = APIRouter(

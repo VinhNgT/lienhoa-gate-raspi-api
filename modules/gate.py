@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form, BackgroundTasks
 from typing import Annotated
 from gpio_modules.servo_hw_pwm import ServoHwPwm
@@ -44,7 +44,10 @@ class Gate:
 
 
 class GateStateResponse(BaseModel):
-    state: GateState
+    state: GateState = Field(
+        description="Current state of the gate",
+        examples=["open", "close"], 
+    )
 
 
 router = APIRouter(
@@ -68,9 +71,7 @@ def read_gate():
     summary="Set gate state",
     response_model=GateStateResponse,
 )
-def set_gate(
-    state: Annotated[GateState, Form()], background_tasks: BackgroundTasks
-):
+def set_gate(state: Annotated[GateState, Form()], background_tasks: BackgroundTasks):
     if gate.is_limited:
         raise app_exceptions.TooManyRequestsException()
 

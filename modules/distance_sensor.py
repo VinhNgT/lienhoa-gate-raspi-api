@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from fastapi import APIRouter, Form
-from typing import Annotated
+from fastapi import APIRouter
 from gpio_modules.laser_distance_i2c import LaserDistanceI2c
 
 
