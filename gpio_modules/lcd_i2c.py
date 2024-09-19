@@ -44,7 +44,7 @@ class LcdI2c:
         self._lcd.clear()
 
     def write_string(self, text: str, clear=True, format_string=True):
-        lines = text.split("\n")
+        lines = text.strip().split("\n")
         lines = list(
             chain.from_iterable(
                 [self._auto_newline(line) if line != "" else [""] for line in lines]
@@ -98,5 +98,11 @@ def run_example():
         lcd.write_string(input_str)
 
 
+def run_example_print():
+    lcd = LcdI2c(i2c_bus=1)
+    lcd.write_string(("8" * 20 + "\n") * 4)
+
+
 if __name__ == "__main__":
-    run_example()
+    # run_example()
+    run_example_print()
