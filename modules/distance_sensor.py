@@ -6,7 +6,7 @@ from gpio_modules.laser_distance_i2c import LaserDistanceI2c
 
 class DistanceSensor:
     def __init__(self):
-        self._sensor = LaserDistanceI2c(i2c_bus=7, calibration_offset=-40)
+        self._sensor = LaserDistanceI2c(i2c_bus=7)
 
     def get_distance(self) -> float:
         return self._sensor.get_distance()
