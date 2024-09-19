@@ -49,7 +49,7 @@ class GateStateResponse(BaseModel):
 
 router = APIRouter(
     prefix="/gate",
-    tags=["gate"],
+    tags=["gate (module MG90S)"],
 )
 gate = Gate()
 
@@ -60,9 +60,6 @@ gate = Gate()
     response_model=GateStateResponse,
 )
 def read_gate():
-    """
-    Get the gate current state
-    """
     return GateStateResponse(state=gate.current_state)
 
 
@@ -71,12 +68,9 @@ def read_gate():
     summary="Set gate state",
     response_model=GateStateResponse,
 )
-def set_status_light(
+def set_gate(
     state: Annotated[GateState, Form()], background_tasks: BackgroundTasks
 ):
-    """
-    Set the gate state
-    """
     if gate.is_limited:
         raise app_exceptions.TooManyRequestsException()
 

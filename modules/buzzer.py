@@ -49,9 +49,6 @@ buzzer = Buzzer()
 def set_buzzer(
     data: Annotated[BuzzerFormData, Form()], background_tasks: BackgroundTasks
 ):
-    """
-    Set buzzer frequency and duration
-    """
     if buzzer.is_limited:
         raise app_exceptions.TooManyRequestsException()
 

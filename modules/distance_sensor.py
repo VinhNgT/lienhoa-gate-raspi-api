@@ -18,7 +18,7 @@ class DistanceSensorResponse(BaseModel):
 
 router = APIRouter(
     prefix="/distance_sensor",
-    tags=["distance_sensor"],
+    tags=["distance_sensor (module VL53L0X)"],
 )
 distance_sensor = DistanceSensor()
 
@@ -29,7 +29,4 @@ distance_sensor = DistanceSensor()
     response_model=DistanceSensorResponse,
 )
 def get_distance():
-    """
-    Get the distance sensor reading
-    """
     return DistanceSensorResponse(distance=distance_sensor.get_distance())

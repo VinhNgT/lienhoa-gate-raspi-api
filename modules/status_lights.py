@@ -44,7 +44,7 @@ class StatusLightsStateResponse(BaseModel):
 
 router = APIRouter(
     prefix="/status_lights_state",
-    tags=["status_lights_state"],
+    tags=["status_lights_state (module PCF8574)"],
 )
 status_lights = StatusLights()
 
@@ -55,9 +55,6 @@ status_lights = StatusLights()
     response_model=StatusLightsStateResponse,
 )
 def read_status_light():
-    """
-    Get PCF8574 module status lights state
-    """
     return StatusLightsStateResponse(state=status_lights.current_state)
 
 
@@ -67,8 +64,5 @@ def read_status_light():
     response_model=StatusLightsStateResponse,
 )
 def set_status_light(state: Annotated[StatusLightState, Form()]):
-    """
-    Set PCF8574 module status lights state
-    """
     status_lights.set_status(state)
     return StatusLightsStateResponse(state=status_lights.current_state)

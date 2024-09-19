@@ -23,7 +23,7 @@ class LcdResponse(BaseModel):
 
 router = APIRouter(
     prefix="/screen",
-    tags=["screen"],
+    tags=["screen (module 2004A with PCF8574 I2C backpack)"],
 )
 screen = LcdScreen()
 
@@ -34,8 +34,5 @@ screen = LcdScreen()
     response_model=LcdResponse,
 )
 def set_lcd_text(data: Annotated[LcdFormData, Form()]):
-    """
-    Set lcd screen text
-    """
     screen.write_string(data.text, data.format)
     return LcdResponse(text=data.text)

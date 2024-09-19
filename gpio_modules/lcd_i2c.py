@@ -16,10 +16,10 @@ class LcdI2c:
             rows=4,
         )
 
-    def __del__(self):
-        self._lcd.clear()
-        self.write_string("LCD connection closed")
-        self._lcd.close()
+    # def __del__(self):
+    #     self._lcd.clear()
+    #     self.write_string("LCD connection closed")
+    #     self._lcd.close()
 
     def _auto_newline(
         self, input_string: str, max_line_length=MAX_LINE_LENGTH
