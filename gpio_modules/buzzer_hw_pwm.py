@@ -24,11 +24,10 @@ class BuzzerHwPwm:
 
 
 def run_example():
-    buzzer = BuzzerHwPwm(pwm_channel=1)
-
-    for i in range(5):
-        buzzer.beep(frequency=600, duration=0.5)
-        sleep(0.1)
+    with BuzzerHwPwm(pwm_channel=1) as buzzer:
+        for i in range(5):
+            buzzer.beep(frequency=600, duration=0.5)
+            sleep(0.1)
 
 
 if __name__ == "__main__":

@@ -97,25 +97,23 @@ class ServoHwPwm:
 
 
 def run_example_1():
-    servo = ServoHwPwm(pwm_channel=0)
-
     try:
-        while True:
-            for i in [0, 90, 180, 90]:
-                # for i in [0, 90, 180]:
-                servo.set_angle(i)
-                sleep(SERVO_DEFAULT_SLEEP_DURATION)
+        with ServoHwPwm(pwm_channel=0) as servo:
+            while True:
+                for i in [0, 90, 180, 90]:
+                    # for i in [0, 90, 180]:
+                    servo.set_angle(i)
+                    sleep(SERVO_DEFAULT_SLEEP_DURATION)
 
     except KeyboardInterrupt:
         pass
 
 
 def run_example_2():
-    servo = ServoHwPwm(pwm_channel=0)
-
-    while True:
-        input_angle = float(input("Enter angle: "))
-        servo.ease_angle(input_angle, ease_seconds=1)
+    with ServoHwPwm(pwm_channel=0) as servo:
+        while True:
+            input_angle = float(input("Enter angle: "))
+            servo.ease_angle(input_angle, ease_seconds=1)
 
 
 def servo_calibrator():
