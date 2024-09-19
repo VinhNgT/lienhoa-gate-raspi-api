@@ -46,7 +46,7 @@ class BuzzerFormData(BaseModel):
 
 router = APIRouter(
     prefix="/buzzer",
-    tags=["buzzer"],
+    tags=["buzzer (passive)"],
 )
 buzzer = Buzzer()
 

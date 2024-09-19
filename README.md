@@ -1,4 +1,4 @@
-Upgrage packages:
+Upgrade packages:
 
 ```bash
 pip freeze > requirements.txt
