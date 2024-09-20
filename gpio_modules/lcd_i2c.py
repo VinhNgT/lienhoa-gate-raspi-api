@@ -1,6 +1,13 @@
 from RPLCD.i2c import CharLCD
 from itertools import chain
 from typing import Final
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+print(sys.path)
+
+from utils.newline_formatter import NewlineFormatter
 
 
 class LcdI2c:
@@ -16,45 +23,31 @@ class LcdI2c:
             rows=4,
         )
 
-    # def __del__(self):
-    #     self._lcd.clear()
-    #     self.write_string("LCD connection closed")
-    #     self._lcd.close()
+        self._newline_formatter = NewlineFormatter(self.MAX_LINE_LENGTH)
 
-    def _auto_newline(
-        self, input_string: str, max_line_length=MAX_LINE_LENGTH
-    ) -> list[str]:
-        words = input_string.split()
-        lines = []
-
-        for word in words:
-            if len(word) >= max_line_length or len(lines) == 0:
-                lines.append(word)
-                continue
-
-            if (len(lines[-1]) + len(" ") + len(word)) <= max_line_length:
-                lines[-1] += f" {word}"
-                continue
-
-            lines.append(word)
-
-        return lines
+    def close(self):
+        self._lcd.close()
 
     def clear(self):
         self._lcd.clear()
 
-    def write_string(self, text: str, clear=True, format_string=True):
-        lines = text.strip().split("\n")
+    def write_string(self, text: str, clear=True):
+        lines = text.rstrip().split("\n")
         lines = list(
             chain.from_iterable(
-                [self._auto_newline(line) if line != "" else [""] for line in lines]
+                [
+                    self._newline_formatter.format(line) if line != "" else [""]
+                    for line in lines
+                ]
             )
         )
 
         if clear:
             self.clear()
 
-        print("Sending text to LCD:")
+        print(f"Sending text to LCD: {lines}")
+        print("-" * self.MAX_LINE_LENGTH)
+
         for i, line in enumerate(lines):
             print(line)
 
@@ -63,13 +56,10 @@ class LcdI2c:
                     f"Number of lines is greater than {self.MAX_LINE_COUNT}: {lines}"
                 )
 
-            if len(line) > self.MAX_LINE_LENGTH:
-                raise ValueError(
-                    f"Line length is greater than {self.MAX_LINE_LENGTH} characters: {line}"
-                )
-
             self._lcd.write_string(line)
             self._lcd.crlf()
+
+        print("-" * self.MAX_LINE_LENGTH)
 
 
 def run_example():

@@ -2,14 +2,21 @@ from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form
 from typing import Annotated
 from gpio_modules.lcd_i2c import LcdI2c
+import atexit
 
 
 class LcdScreen:
     def __init__(self):
         self._lcd = LcdI2c(i2c_bus=1)
+        atexit.register(self.cleanup)
 
-    def write_string(self, text: str, format_string: bool):
-        self._lcd.write_string(text, format_string=format_string)
+    def write_string(self, text: str):
+        self._lcd.write_string(text)
+
+    def cleanup(self):
+        self._lcd.clear()
+        self.write_string("LCD connection closed")
+        self._lcd.close()
 
 
 class LcdFormData(BaseModel):
@@ -17,7 +24,6 @@ class LcdFormData(BaseModel):
         description="Text to display on the screen",
         examples=["Hello, World!"],
     )
-    format: bool = True
 
 
 class LcdResponse(BaseModel):
@@ -37,5 +43,5 @@ screen = LcdScreen()
     response_model=LcdResponse,
 )
 def set_lcd_text(data: Annotated[LcdFormData, Form()]):
-    screen.write_string(data.text, data.format)
+    screen.write_string(data.text)
     return LcdResponse(text=data.text)
