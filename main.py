@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 from modules import status_lights, gate, screen, buzzer, distance_sensor
-from modules.exceptions import app_exceptions
+from exceptions import app_exceptions
 
 app = FastAPI(
     title="LienHoa auto parking gate",

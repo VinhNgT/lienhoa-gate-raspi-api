@@ -4,8 +4,8 @@ from typing import Annotated
 from gpio_modules.buzzer_hw_pwm import BuzzerHwPwm
 import atexit
 import threading
-from modules.exceptions import app_exceptions
-from modules.utils.request_count_tracker import RequestCountTracker
+from exceptions import app_exceptions
+from utils.request_count_tracker import RequestCountTracker
 
 
 class Buzzer:

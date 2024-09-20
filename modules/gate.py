@@ -5,8 +5,8 @@ from typing import Annotated
 from gpio_modules.servo_hw_pwm import ServoHwPwm
 import atexit
 import threading
-from modules.exceptions import app_exceptions
-from modules.utils.request_count_tracker import RequestCountTracker
+from exceptions import app_exceptions
+from utils.request_count_tracker import RequestCountTracker
 
 
 class GateState(str, Enum):
@@ -46,7 +46,7 @@ class Gate:
 class GateStateResponse(BaseModel):
     state: GateState = Field(
         description="Current state of the gate",
-        examples=["open", "close"], 
+        examples=["open", "close"],
     )
 
 
