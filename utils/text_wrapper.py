@@ -24,7 +24,7 @@ class Spaces(StringObject):
         super().__init__(content)
 
 
-class TextWrapper :
+class TextWrapper:
     def __init__(self, max_line_length: int):
         self.max_line_length: Final = max_line_length
 
@@ -49,6 +49,8 @@ class TextWrapper :
 
             match obj:
                 case Spaces():
+                    # The number of spaces that we need to remove because they are
+                    # considered "newline".
                     space_to_newline_num = (len(lines[-1]) + len(obj)) // (
                         self.max_line_length + 1
                     )
@@ -76,7 +78,7 @@ class TextWrapper :
 
 
 def run_example():
-    formatter = TextWrapper (20)
+    formatter = TextWrapper(20)
     text = "Hello, World!        888888"
 
     result = formatter.wrap(text)
