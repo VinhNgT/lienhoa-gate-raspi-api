@@ -3,15 +3,19 @@ from fastapi import APIRouter, Form
 from typing import Annotated
 from gpio_modules.lcd_i2c import LcdI2c
 import atexit
+import threading
 
 
 class LcdScreen:
     def __init__(self):
         self._lcd = LcdI2c(i2c_bus=1)
+        self._lock = threading.Lock()
+
         atexit.register(self.cleanup)
 
     def write_string(self, text: str):
-        self._lcd.write_string(text)
+        with self._lock:
+            self._lcd.write_string(text)
 
     def cleanup(self):
         self._lcd.clear()
