@@ -24,7 +24,7 @@ class Spaces(StringObject):
         super().__init__(content)
 
 
-class NewlineFormatter:
+class TextWrapper :
     def __init__(self, max_line_length: int):
         self.max_line_length: Final = max_line_length
 
@@ -35,7 +35,7 @@ class NewlineFormatter:
     def _get_remaining_space(self, line: str) -> int:
         return self.max_line_length - len(line)
 
-    def format(self, text: str) -> list[str]:
+    def wrap(self, text: str) -> list[str]:
         if len(text) == 0:
             return []
 
@@ -76,10 +76,10 @@ class NewlineFormatter:
 
 
 def run_example():
-    formatter = NewlineFormatter(20)
+    formatter = TextWrapper (20)
     text = "Hello, World!        888888"
 
-    result = formatter.format(text)
+    result = formatter.wrap(text)
     for line in result:
         print(line)
 

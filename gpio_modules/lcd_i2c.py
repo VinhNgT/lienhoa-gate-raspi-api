@@ -7,7 +7,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 print(sys.path)
 
-from utils.newline_formatter import NewlineFormatter
+from utils.text_wrapper import TextWrapper
 
 
 class LcdI2c:
@@ -23,7 +23,7 @@ class LcdI2c:
             rows=4,
         )
 
-        self._newline_formatter = NewlineFormatter(self.MAX_LINE_LENGTH)
+        self._text_wrapper = TextWrapper(self.MAX_LINE_LENGTH)
 
     def close(self):
         self._lcd.close()
@@ -36,7 +36,7 @@ class LcdI2c:
         lines = list(
             chain.from_iterable(
                 [
-                    self._newline_formatter.format(line) if line != "" else [""]
+                    self._text_wrapper.wrap(line) if line != "" else [""]
                     for line in lines
                 ]
             )
