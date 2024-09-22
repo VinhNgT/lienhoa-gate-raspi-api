@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import PlainTextResponse
 from modules import status_lights, gate, screen, buzzer, distance_sensor
 from exceptions import app_exceptions
 
@@ -18,6 +19,16 @@ app.include_router(gate.router)
 app.include_router(screen.router)
 app.include_router(buzzer.router)
 app.include_router(distance_sensor.router)
+
+
+@app.get(
+    "/",
+    summary="Welcome screen",
+    tags=["pages"],
+    response_class=PlainTextResponse,
+)
+def homescreen():
+    return "Hello, World!"
 
 
 @app.exception_handler(ValueError)
