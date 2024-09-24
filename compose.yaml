@@ -1,0 +1,18 @@
+services:
+  lienhoa-gate-raspi-api:
+    build: .
+    image: ghcr.io/vinhngt/lienhoa-gate-raspi-api:latest
+    container_name: lienhoa-gate-raspi-api
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - "/sys/class/pwm/pwmchip0:/sys/class/pwm/pwmchip0"
+
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/i2c-8:/dev/i2c-8"
+      - "/dev/i2c-7:/dev/i2c-7"
+
+    restart: unless-stopped
