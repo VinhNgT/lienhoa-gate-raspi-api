@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from fastapi import APIRouter
-from gpio_modules.laser_distance_i2c import LaserDistanceI2c
+
+from app.gpio_modules import LaserDistanceI2c
 
 
 class DistanceSensor:

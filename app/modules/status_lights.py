@@ -2,7 +2,8 @@ from enum import Enum
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form
 from typing import Annotated
-from gpio_modules.leds_i2c import LedsI2c
+
+from app.gpio_modules import LedsI2c
 
 
 class StatusLightState(str, Enum):

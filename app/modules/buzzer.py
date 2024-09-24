@@ -1,11 +1,12 @@
 from pydantic import BaseModel, Field
-from fastapi import APIRouter, Form, BackgroundTasks, Body
+from fastapi import APIRouter, Form, BackgroundTasks
 from typing import Annotated
-from gpio_modules.buzzer_hw_pwm import BuzzerHwPwm
 import atexit
 import threading
 from exceptions import app_exceptions
-from utils.request_count_tracker import RequestCountTracker
+
+from app.utils.request_count_tracker import RequestCountTracker
+from app.gpio_modules import BuzzerHwPwm
 
 
 class Buzzer:

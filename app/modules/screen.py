@@ -1,9 +1,10 @@
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form
 from typing import Annotated
-from gpio_modules.lcd_i2c import LcdI2c
 import atexit
 import threading
+
+from app.gpio_modules import LcdI2c
 
 
 class LcdScreen:

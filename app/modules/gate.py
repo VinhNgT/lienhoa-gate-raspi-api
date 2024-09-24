@@ -2,11 +2,12 @@ from enum import Enum
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form, BackgroundTasks
 from typing import Annotated
-from gpio_modules.servo_hw_pwm import ServoHwPwm
 import atexit
 import threading
-from exceptions import app_exceptions
-from utils.request_count_tracker import RequestCountTracker
+
+from app.gpio_modules import ServoHwPwm
+from app.exceptions import app_exceptions
+from app.utils.request_count_tracker import RequestCountTracker
 
 
 class GateState(str, Enum):
