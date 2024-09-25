@@ -46,7 +46,7 @@ dtoverlay=disable-bt
 
 - Reboot with `sudo reboot`
 - Run `docker compose up`
-  - Note: You can use `docker compose up --build` to force build locally. Not recommended because it will take 1 hour on a Pi Zero 2.
+  - Note: You can use `docker compose up --build` to force build locally.
 - Use examples in `insomnia_exports` to familiarize yourself, or go to http://raspberrypi/docs
 
 ## Manual start (not automatically start on boot)
