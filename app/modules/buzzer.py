@@ -3,8 +3,8 @@ from fastapi import APIRouter, Form, BackgroundTasks
 from typing import Annotated
 import atexit
 import threading
-from exceptions import app_exceptions
 
+from app.exceptions import app_exceptions
 from app.utils.request_count_tracker import RequestCountTracker
 from app.gpio_modules import BuzzerHwPwm
 
