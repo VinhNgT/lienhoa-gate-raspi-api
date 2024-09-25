@@ -1,4 +1,4 @@
-FROM python:3.11.2
+FROM python:3.11-bookworm
 
 LABEL org.opencontainers.image.source=https://github.com/VinhNgT/lienhoa_auto_parking_gate
 
