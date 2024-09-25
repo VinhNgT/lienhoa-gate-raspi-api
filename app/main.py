@@ -1,8 +1,16 @@
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import PlainTextResponse
+from contextlib import asynccontextmanager
 
 from app.modules import status_lights, gate, screen, buzzer, distance_sensor
 from app.exceptions import app_exceptions
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    screen.screen.write_string("API ready")
+    yield
+
 
 app = FastAPI(
     title="LienHoa auto parking gate",
@@ -13,7 +21,9 @@ app = FastAPI(
         "url": "https://github.com/VinhNgT",
         "email": "victorpublic0000@gmail.com",
     },
+    lifespan=lifespan,
 )
+
 
 app.include_router(status_lights.router)
 app.include_router(gate.router)
