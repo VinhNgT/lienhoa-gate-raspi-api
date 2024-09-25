@@ -1,13 +1,12 @@
 from RPLCD.i2c import CharLCD
 from itertools import chain
 from typing import Final
+
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-print(sys.path)
-
-from utils.text_wrapper import TextWrapper
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from app.gpio_modules.utils.text_wrapper import TextWrapper
 
 
 class LcdI2c:
