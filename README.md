@@ -44,12 +44,20 @@ dtoverlay=disable-bt
   sudo systemctl enable containerd.service
   ```
 
+- Create file `/etc/docker/daemon.json` with content:
+
+  ```json
+  {
+    "log-driver": "local"
+  }
+  ```
+
 - Reboot with `sudo reboot`
 - Run `docker compose up`
   - Note: You can use `docker compose up --build` to force build locally.
 - Use examples in `insomnia_exports` to familiarize yourself, or go to http://raspberrypi/docs
 
-## Manual start (not automatically start on boot)
+## Manual start (not automatically start on boot, more error prone)
 
 ```bash
 python -m venv .venv
