@@ -1,33 +1,20 @@
 from pydantic import BaseModel, Field
-from fastapi import APIRouter, Form, BackgroundTasks
+from fastapi import APIRouter, Form
 from typing import Annotated
 import atexit
-import threading
+from contextlib import asynccontextmanager
 
-from app.exceptions import app_exceptions
-from app.utils.request_count_tracker import RequestCountTracker
 from app.gpio_modules import BuzzerHwPwm
+from app.utils.request_queue import RequestQueue
 
 
 class Buzzer:
     def __init__(self):
         self._buzzer = BuzzerHwPwm(pwm_channel=1)
-        self._lock = threading.Lock()
-        self._requests_count_tracker = RequestCountTracker(3)
-
         atexit.register(self._buzzer.cleanup)
 
-    @property
-    def is_limited(self):
-        return self._requests_count_tracker.is_max_requests_reached()
-
     def beep(self, frequency, duration):
-        if self.is_limited:
-            raise app_exceptions.TooManyRequestsException()
-
-        with self._requests_count_tracker:
-            with self._lock:
-                self._buzzer.beep(frequency, duration)
+        self._buzzer.beep(frequency, duration)
 
 
 class BuzzerFormData(BaseModel):
@@ -45,11 +32,21 @@ class BuzzerFormData(BaseModel):
     )
 
 
+buzzer = Buzzer()
+request_queue = RequestQueue(3)
+
+
+@asynccontextmanager
+async def lifespan(app: APIRouter):
+    yield
+    request_queue.shutdown()
+
+
 router = APIRouter(
     prefix="/buzzer",
     tags=["buzzer (passive)"],
+    lifespan=lifespan,
 )
-buzzer = Buzzer()
 
 
 @router.post(
@@ -57,12 +54,7 @@ buzzer = Buzzer()
     summary="Set buzzer frequency and duration",
     response_model=BuzzerFormData,
 )
-def set_buzzer(
-    data: Annotated[BuzzerFormData, Form()],
-    background_tasks: BackgroundTasks,
-):
-    if buzzer.is_limited:
-        raise app_exceptions.TooManyRequestsException()
+def set_buzzer(data: Annotated[BuzzerFormData, Form()]):
+    request_queue.submit(buzzer.beep, data.frequency, data.duration)
 
-    background_tasks.add_task(buzzer.beep, data.frequency, data.duration)
     return BuzzerFormData(frequency=data.frequency, duration=data.duration)

@@ -1,13 +1,12 @@
 from enum import Enum
 from pydantic import BaseModel, Field
-from fastapi import APIRouter, Form, BackgroundTasks
+from fastapi import APIRouter, Form
 from typing import Annotated
 import atexit
-import threading
+from contextlib import asynccontextmanager
 
 from app.gpio_modules import ServoHwPwm
-from app.exceptions import app_exceptions
-from app.utils.request_count_tracker import RequestCountTracker
+from app.utils.request_queue import RequestQueue
 
 
 class GateState(str, Enum):
@@ -18,30 +17,19 @@ class GateState(str, Enum):
 class Gate:
     def __init__(self):
         self._servo = ServoHwPwm(pwm_channel=0)
-        self._lock = threading.Semaphore()
-        self._requests_count_tracker = RequestCountTracker(3)
 
         self.set_status(GateState.CLOSE)
         atexit.register(self._servo.cleanup)
 
-    @property
-    def is_limited(self):
-        return self._requests_count_tracker.is_max_requests_reached()
-
     def set_status(self, state: GateState):
-        if self.is_limited:
-            raise app_exceptions.TooManyRequestsException()
+        match state:
+            case GateState.CLOSE:
+                self._servo.ease_angle(0, ease_seconds=0.5)
 
-        with self._requests_count_tracker:
-            with self._lock:
-                match state:
-                    case GateState.CLOSE:
-                        self._servo.ease_angle(0, ease_seconds=0.5)
+            case GateState.OPEN:
+                self._servo.ease_angle(90, ease_seconds=0.5)
 
-                    case GateState.OPEN:
-                        self._servo.ease_angle(90, ease_seconds=0.5)
-
-                self.current_state = state
+        self.current_state = state
 
 
 class GateStateResponse(BaseModel):
@@ -51,11 +39,21 @@ class GateStateResponse(BaseModel):
     )
 
 
+gate = Gate()
+request_queue = RequestQueue(3)
+
+
+@asynccontextmanager
+async def lifespan(app: APIRouter):
+    yield
+    request_queue.shutdown()
+
+
 router = APIRouter(
     prefix="/gate",
     tags=["gate (module MG90S)"],
+    lifespan=lifespan,
 )
-gate = Gate()
 
 
 @router.get(
@@ -72,9 +70,7 @@ def read_gate():
     summary="Set gate state",
     response_model=GateStateResponse,
 )
-def set_gate(state: Annotated[GateState, Form()], background_tasks: BackgroundTasks):
-    if gate.is_limited:
-        raise app_exceptions.TooManyRequestsException()
+def set_gate(state: Annotated[GateState, Form()]):
+    request_queue.submit(gate.set_status, state)
 
-    background_tasks.add_task(gate.set_status, state)
     return GateStateResponse(state=gate.current_state)
