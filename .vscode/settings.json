@@ -1,4 +1,15 @@
 {
   "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.autoImportCompletions": true
+  "python.analysis.autoImportCompletions": true,
+
+  "remote.SSH.defaultForwardedPorts": [
+    {
+      "name": "fastapi_dev",
+      "localPort": 8000,
+      "remotePort": 8000
+    }
+  ],
+  "terminal.integrated.env.linux": {
+    "WORKSPACE_PATH": "${workspaceFolder}"
+  }
 }
