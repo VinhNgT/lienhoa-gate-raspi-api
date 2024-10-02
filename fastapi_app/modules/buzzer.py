@@ -4,8 +4,8 @@ from typing import Annotated
 import atexit
 from contextlib import asynccontextmanager
 
-from app.gpio_modules import BuzzerHwPwm
-from app.utils.request_queue import RequestQueue
+from fastapi_app.gpio_modules import BuzzerHwPwm
+from fastapi_app.utils.request_queue import RequestQueue
 
 
 class Buzzer:

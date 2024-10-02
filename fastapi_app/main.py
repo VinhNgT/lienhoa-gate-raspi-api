@@ -2,8 +2,8 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import PlainTextResponse
 from contextlib import asynccontextmanager
 
-from app.modules import status_lights, gate, screen, buzzer, distance_sensor
-from app.exceptions import app_exceptions
+from fastapi_app.modules import status_lights, gate, screen, buzzer, distance_sensor
+from fastapi_app.exceptions import app_exceptions
 
 
 # Get the app's version number.

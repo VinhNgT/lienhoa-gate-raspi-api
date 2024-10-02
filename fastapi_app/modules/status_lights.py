@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from fastapi import APIRouter, Form
 from typing import Annotated
 
-from app.gpio_modules import LedsI2c
+from fastapi_app.gpio_modules import LedsI2c
 
 
 class StatusLightState(str, Enum):

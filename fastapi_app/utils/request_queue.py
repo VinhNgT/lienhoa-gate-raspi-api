@@ -1,6 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from app.exceptions import app_exceptions
+from fastapi_app.exceptions import app_exceptions
 
 
 class RequestQueue:

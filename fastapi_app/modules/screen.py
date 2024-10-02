@@ -4,7 +4,7 @@ from typing import Annotated
 import atexit
 import threading
 
-from app.gpio_modules import LcdI2c
+from fastapi_app.gpio_modules import LcdI2c
 
 
 class LcdScreen:

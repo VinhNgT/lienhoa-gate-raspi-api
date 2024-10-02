@@ -6,7 +6,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from app.gpio_modules.utils.text_wrapper import TextWrapper
+from fastapi_app.gpio_modules.utils.text_wrapper import TextWrapper
 
 
 class LcdI2c:
