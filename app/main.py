@@ -6,6 +6,15 @@ from app.modules import status_lights, gate, screen, buzzer, distance_sensor
 from app.exceptions import app_exceptions
 
 
+# Get the app's version number.
+try:
+    with open("version.txt", "r") as version_file:
+        VERSION = version_file.read().strip()
+
+except FileNotFoundError:
+    VERSION = "0.0.1"
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     screen.screen.write_string("API ready")
@@ -14,7 +23,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="LienHoa auto parking gate",
-    version="1.0.3",
+    version=VERSION,
     summary="API điều khiển module Raspberry Pi Zero 2 cho dự án cổng tự động.",
     contact={
         "name": "Nguyễn Thế Vinh",
