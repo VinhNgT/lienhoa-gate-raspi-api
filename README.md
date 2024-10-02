@@ -23,7 +23,7 @@ dtoverlay=disable-bt
 **Warning:** Use a "High Endurance" SD card, as intensive swap operations can quickly wear out standard cards.
 
 - Edit `/etc/dphys-swapfile`
-- Change `CONF_SWAPSIZE` to `1024`
+- Change `CONF_SWAPSIZE` to `512`
 - Create a new file, `/etc/sysctl.d/90-swappiness.conf`
 - Add to that file:
 
