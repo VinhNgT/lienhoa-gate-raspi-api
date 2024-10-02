@@ -44,7 +44,7 @@ jobs:
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_OUTPUT
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-  docker:
+  build-docker:
     runs-on: ubuntu-latest
     needs: get-variables
     steps:
