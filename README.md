@@ -1,6 +1,6 @@
 # LienHoa auto gate - Gate module API
 
-API for controlling gate states (open/close, status lights, LCD screen,...)
+API for controlling gate states (open/close, status lights, LCD screen,...).
 
 ![GitHub Tag](https://img.shields.io/github/v/tag/VinhNgT/lienhoa-gate-raspi-api?style=flat-square)
 
