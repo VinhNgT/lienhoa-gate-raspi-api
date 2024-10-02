@@ -1,3 +1,9 @@
+# LienHoa auto gate - Gate module API
+
+API for controlling gate states (open/close, status lights, LCD screen,...)
+
+![GitHub Tag](https://img.shields.io/github/v/tag/VinhNgT/lienhoa-gate-raspi-api?style=flat-square)
+
 ## Raspberry Pi Zero 2 Setup
 
 **Note:** Use Raspberry Pi OS 32-bit because Zero 2 is slow af in 64-bit mode.
