@@ -21,13 +21,16 @@ while true; do
     fi
 done
 
+# Unstage the version file if it is already staged
+git reset HEAD "$WORKSPACE_PATH/version.txt"
+
 # Update version.txt and create a commit with.
 echo "$user_input" >"$WORKSPACE_PATH/version.txt"
 if ! git diff --quiet "$WORKSPACE_PATH/version.txt" ||
     ! git ls-files --error-unmatch "$WORKSPACE_PATH/version.txt" &>/dev/null; then
 
     git add "$WORKSPACE_PATH/version.txt"
-    git commit -m "chore: update number version to $user_input"
+    git commit -m "chore: update version number to $user_input"
 else
     echo "No changes in version.txt, skipping commit."
 fi
