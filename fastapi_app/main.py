@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="LienHoa auto parking gate",
+    title="LienHoa auto gate - Gate module API",
     version=VERSION,
     summary="API điều khiển module Raspberry Pi Zero 2 cho dự án cổng tự động.",
     contact={
