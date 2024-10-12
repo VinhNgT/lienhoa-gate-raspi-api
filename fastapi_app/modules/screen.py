@@ -10,7 +10,7 @@ from fastapi_app.gpio_modules import LcdI2c
 
 class LcdScreen:
     def __init__(self):
-        self._lcd = LcdI2c(i2c_bus=1)
+        self._lcd = LcdI2c(i2c_bus=8)
         self._lock = threading.Lock()
 
         atexit.register(self.cleanup)
