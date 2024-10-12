@@ -1,5 +1,6 @@
-from rpi_hardware_pwm import HardwarePWM
 from time import sleep
+
+from rpi_hardware_pwm import HardwarePWM
 
 
 class BuzzerHwPwm:

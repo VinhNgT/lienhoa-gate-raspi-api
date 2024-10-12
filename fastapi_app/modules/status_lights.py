@@ -1,7 +1,8 @@
 from enum import Enum
-from pydantic import BaseModel, Field
-from fastapi import APIRouter, Form
 from typing import Annotated
+
+from fastapi import APIRouter, Form
+from pydantic import BaseModel, Field
 
 from fastapi_app.gpio_modules import LedsI2c
 

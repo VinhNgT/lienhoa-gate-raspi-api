@@ -1,9 +1,9 @@
-from RPLCD.i2c import CharLCD
+import os
+import sys
 from itertools import chain
 from typing import Final
 
-import sys
-import os
+from RPLCD.i2c import CharLCD
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from fastapi_app.gpio_modules.utils.text_wrapper import TextWrapper

@@ -1,7 +1,8 @@
-from rpi_hardware_pwm import HardwarePWM
-from time import sleep
 import math
+from time import sleep
 from typing import Final
+
+from rpi_hardware_pwm import HardwarePWM
 
 SERVO_DEFAULT_SLEEP_DURATION = 0.5
 

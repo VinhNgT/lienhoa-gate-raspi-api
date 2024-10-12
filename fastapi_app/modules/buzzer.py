@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field
-from fastapi import APIRouter, Form
-from typing import Annotated
 import atexit
 from contextlib import asynccontextmanager
+from typing import Annotated
+
+from fastapi import APIRouter, Form
+from pydantic import BaseModel, Field
 
 from fastapi_app.gpio_modules import BuzzerHwPwm
 from fastapi_app.utils.request_queue import RequestQueue

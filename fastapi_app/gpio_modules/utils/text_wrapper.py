@@ -1,5 +1,6 @@
-from typing import Final
 import re
+from typing import Final
+
 from more_itertools import batched
 
 

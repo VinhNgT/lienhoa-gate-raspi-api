@@ -1,8 +1,8 @@
-from typing import Final
-from adafruit_pcf8574 import PCF8574
-from adafruit_extended_bus import ExtendedI2C as I2C
-from typing import Final
 from time import sleep
+from typing import Final
+
+from adafruit_extended_bus import ExtendedI2C as I2C
+from adafruit_pcf8574 import PCF8574
 
 
 class LedsI2c:

@@ -1,5 +1,5 @@
-from pydantic import BaseModel
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 from fastapi_app.gpio_modules import LaserDistanceI2c
 

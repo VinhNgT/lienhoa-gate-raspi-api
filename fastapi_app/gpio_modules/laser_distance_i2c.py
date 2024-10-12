@@ -1,7 +1,8 @@
-from typing import Final
-from adafruit_vl53l0x import VL53L0X
-from adafruit_extended_bus import ExtendedI2C as I2C
 from time import sleep
+from typing import Final
+
+from adafruit_extended_bus import ExtendedI2C as I2C
+from adafruit_vl53l0x import VL53L0X
 
 
 class LaserDistanceI2c:
